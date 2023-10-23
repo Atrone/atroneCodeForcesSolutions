@@ -22,9 +22,10 @@ for oi, _ in enumerate(h):
                 sub_arrays[oi].append(i + oi)
         else:
             break
-sums = []
-for sub_array in sub_arrays:
-    s = sum([app for app in a if a.index(app) in sub_array])
-    if s < k:
-        sums.append(s)
-print(max(sums))
+print(max([len(sub_array) for sub_array in sub_arrays]))
+
+#sums = []
+#for sub_array in sub_arrays:
+#    s = sum([app for app in a if a.index(app) in sub_array])
+#    if s < k:
+#        sums.append(s)
