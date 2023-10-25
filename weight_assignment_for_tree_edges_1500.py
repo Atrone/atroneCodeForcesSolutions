@@ -23,8 +23,8 @@
 #   find i such that b[i] = root, add {root: {i: 0, i2: 0}}
 #   find i such that b[i] = previous i, add {root: {i: {i3: 0, i4: 0}, i2: 0}}
 #   how to determine distance_to_root?
-#   nodes with most children need to have least weight
-#   find most children
+#   biggest to smallest:
+#       nodes with most children need to have least weight
 
 n = 5
 b = [3, 1, 3, 3, 1]
@@ -92,15 +92,7 @@ else:
     init_val = 999999999
     back_init_val = 0
     rn = 1
-    # basically what i'm doing is i go from what needs to be biggest to smallest, and if it's a root child without
-    # children , i start with a big number and mark it. if it's a non root child, i find its parent. if the
-    # permutation asks for an impossible option, we dont do it. if the parent is a root child, to offset a possible
-    # premature big number operation, i rewrite the big number operation to a number smaller than the small number
-    # operation if it needs to be smaller than the current parent. the key thing here is i only go lower as time goes
-    # on, and a child cant possibly have less distance than the parent and if its a child and the parent is a root
-    # child, there's a possiblity that we wrongly mark a root child wihout children that should be smaller than it
-    # as larger.
-    #
+
     for v in p[1:][::-1]:
         if v in root_children and v not in non_root_nodes_with_children and v not in dist:
             dist[v] = init_val - back_init_val
