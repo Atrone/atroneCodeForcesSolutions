@@ -26,10 +26,9 @@
 #   nodes with most children need to have least weight
 #   find most children
 
-n = 7
-b = [1, 1, 2, 3, 4, 5, 6]
-p = [1, 2, 3, 4, 5, 6, 7]
-
+n = 5
+b = [3, 1, 3, 3, 1]
+p = [3, 1, 2, 5, 4]
 
 if n == 1:
     if b == p:
@@ -51,12 +50,14 @@ else:
                 if b[i] != current:
                     current = b[i]
                 else:
+                    i += 1
                     continue
         else:
             if current in tree and len(tree[current]) == len([n for n in b if n == current]):
                 if b[i] != current:
                     current = b[i]
                 else:
+                    i += 1
                     continue
         if b[i] == current and b[i] != i + 1:
             if current in tree:
@@ -89,17 +90,36 @@ else:
     # [1,6,5]
     dist = {}
     init_val = 999999999
-    back_init_val = 1
+    back_init_val = 0
+    rn = 1
+    # basically what i'm doing is i go from what needs to be biggest to smallest, and if it's a root child without
+    # children , i start with a big number and mark it. if it's a non root child, i find its parent. if the
+    # permutation asks for an impossible option, we dont do it. if the parent is a root child, to offset a possible
+    # premature big number operation, i rewrite the big number operation to a number smaller than the small number
+    # operation if it needs to be smaller than the current parent. the key thing here is i only go lower as time goes
+    # on, and a child cant possibly have less distance than the parent and if its a child and the parent is a root
+    # child, there's a possiblity that we wrongly mark a root child wihout children that should be smaller than it
+    # as larger.
+    #
     for v in p[1:][::-1]:
-        if v in root_children and v not in non_root_nodes_with_children:
-            dist[v] = init_val
+        if v in root_children and v not in non_root_nodes_with_children and v not in dist:
+            dist[v] = init_val - back_init_val
             init_val -= 1
-        if v in non_root_children:
+        elif v in non_root_children:
             for n, c in children_builder.items():
                 if v in c:
-                    if p.index(n) < p.index(v):
+                    if n not in root_children and p.index(n) < p.index(v):
                         dist[n] = back_init_val
-                        dist[v] = init_val - back_init_val
+                        dist[v] = init_val - back_init_val - 1
+                        back_init_val += 1
+                    elif n in root_children and p.index(n) < p.index(v) and any(
+                            [x for x in p[:n + 1] if x in root_children]):
+                        for x in p[:n + 1][::-1]:
+                            if x in root_children:
+                                dist[x] = back_init_val - rn
+                                rn += 1
+                        dist[n] = back_init_val
+                        dist[v] = init_val - back_init_val - 1
                         back_init_val += 1
                     else:
                         print('none')
