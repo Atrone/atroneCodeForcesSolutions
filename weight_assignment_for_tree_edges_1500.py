@@ -65,7 +65,6 @@ else:
             else:
                 tree[current] = [{i + 1: 0}]
         i += 1
-    print(tree)
     children_builder = {}
     for t, k in tree.items():
         if t == root[0]:
@@ -82,16 +81,10 @@ else:
     for t, c in children_builder.items():
         non_root_children += c
         non_root_nodes_with_children.append(t)
-    print(root_children)
-    print(non_root_children)
-    print(non_root_nodes_with_children)
-    print(children_builder)
-    # [5,2,8,9,12]
-    # [1,6,5]
     dist = {}
-    init_val = 999999999
-    back_init_val = 0
-    rn = 1
+    init_val = 999999999  # inital value for front nodes (top)
+    back_init_val = 0  # initial value for back nodes (bottom)
+    rn = 1  # remove node weight
 
     for v in p[1:][::-1]:
         if v in root_children and v not in non_root_nodes_with_children and v not in dist:

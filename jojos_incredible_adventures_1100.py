@@ -12,13 +12,11 @@
 # if 2 1s next to each other, keep track of their locations each shift, count match with previous
 
 
-s = '101010'
+s = '011110'
 m = []
 if '1' not in s:
     print('0')
 elif ('11' not in s) and (s[0] + s[-1] != '11'):
-    print('0')
-elif len(s) == 1:
     print('1')
 else:
     ones = [i for i, c in enumerate(s) if c == '1']
@@ -36,5 +34,13 @@ else:
 # 001111
 # 100111
 # 110011
+# 111001
+# 111100
+
+
+# 101010
+# 010101
+# 101010
+# 010101
 # 111001
 # 111100
